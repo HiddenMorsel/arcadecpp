@@ -7,33 +7,45 @@
 #include <fn.hpp>
 
 class Pessoa{
-  std::string nome;
-
 public:
- Pessoa(std::string nome) {  
+  std::string nome;
+Pessoa(std::string nome): nome(nome) {}
+        friend std::ostream& operator<<(std::ostream& os, const Pessoa& p) {
+        os << p.nome;
+        return os;
+          
     }
-    std::string getNome() {
+std::string getNome() {
         return nome; 
     }
+ /*Pessoa(std::string nome) {  
+    }
+    
+
+    std::string setNome(std::string n){
+      nome = n;
+      return nome;
+    }
+
     std::string str() {
       std::stringstream ss;
       ss<< nome;
       return ss.str();
-    }
+    }*/
 };
 
-std::ostream& operator<<(std::ostream& os, Pessoa p) {
+/*std::ostream& operator<<(std::ostream& os, Pessoa p) {
     return (os << p.str());
-}
+}*/
 
 class Mercantil{
 std::vector<std::shared_ptr<Pessoa>> caixas;
-std::list  <std::shared_ptr<Pessoa>> esperando;
+std::list<std::shared_ptr<Pessoa>> esperando;
 
-bool validarIndice(int indice) {
+/*bool validarIndice(int indice) {
         return {}; // todo
     }
-
+*/
 public:
 Mercantil(int qtd_caixas) { 
         for(auto i = 0; i < qtd_caixas; i ++){
@@ -41,20 +53,20 @@ Mercantil(int qtd_caixas) {
         }
     }
     
-    void arrive(  std::shared_ptr<Pessoa> person) {
-      esperando.emplace_back( person );
+    void arrive(  std::shared_ptr<Pessoa> p) {
+      esperando.push_back( p );
     }
 
-    bool call(int indice) {
+    /*bool call(int indice) {
         
     }
     
     std::shared_ptr<Pessoa> finish(int indice) {
         return {}; // todo
-    }
+    }*/
 
     std::string str()  {
-     auto caixas_str = caixas | fn::MAP(FNT(c, c == nullptr ? "-----" : c->getNome()));
+     auto caixas_str = caixas | fn::MAP(FNT(c, c == nullptr ? "-----" : c.getNome()));
         return "Caixas: " + fn::tostr(caixas_str) + "\n" + "Espera: " + fn::tostr(esperando);
     }
         
