@@ -1,3 +1,12 @@
+/*
+Tempo: 240 min(?)
+-Fiz a atividade na maior parte sozinho, mas encontrei um problema de lógica no último caso(escrever uma página), graças a isso tive que ir no Almoço com Código, já que pessoalmente prefiro tirar dúvidas com uma pessoa na minha frente do que pelo computador/celular.
+-Na minha primeira tentativa eu colocava a condicional para aparecer a mensagem de tamanho insuficiente na função setSize. Como eu já mandava o resultado da diferença do tamanho do grafite pelo gasto por página a mensagem de fail errada aparecia, sem nesmo dar chance para a mensagem de página incompleta aparecer.
+-No fim, com a ajuda dos monitores na quarta-feira, porque por algum motivo o console do replit não estava funcionando no laboratório da faculdade, chegamos a conclusão de que era melhor colocar todas as mensagens de falha na função de escrever mesmo e deixar o setSize responsável apenas por alocar o tamanho mesmo.
+-Aprendi que embora haja a possibilidade de colocar mensagens de falha diretamente em um setter, o mais simples e óbvio muitas vezes é melhor.
+*/
+
+
 #include<iostream>
 #include <iomanip>
 #include<memory>
@@ -96,21 +105,20 @@ public:
     if(!hasGrafite()) {
       fn::write("fail: nao existe grafite");
       return;
+    }else if(tip->getSize() <= 10) {
+      fn::write("fail: tamanho insuficiente");
+      return;
     }
-    if(tip->getSize() > 10){
-      if(tip->getSize() - tip->usagePerSheet() < 10){
-        fn::write("fail: folha incompleta");
-        tip->setSize(10);
-      } 
-      if(tip->getSize() - tip->usagePerSheet() == 10){
-        fn::write("fail: tamanho insuficiente");
-        tip->setSize(tip->getSize());
-      } 
-      tip->setSize(tip->getSize() - tip->usagePerSheet());
+    else if(tip ->getSize() - tip->usagePerSheet() < 10) {
+      fn::write("fail: folha incompleta");
+      tip->setSize(10);
+      return;
     }
+
+    tip->setSize(tip ->getSize() - tip->usagePerSheet());
+     
     
-    
-  }
+    }
 
   std::string str() {
         std::stringstream ss;
