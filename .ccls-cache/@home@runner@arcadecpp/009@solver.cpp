@@ -28,8 +28,8 @@ public:
 
 using PtrKid = std::shared_ptr<Kid>;
 
-std::ostream& operator<<(std::ostream& os,  PtrKid kid) {
-    return os << kid->str();
+std::ostream& operator<<(std::ostream& os,  Kid kid) {
+    return os << kid.str();
 }
 
 class Trampoline {
@@ -55,7 +55,7 @@ public:
     PtrKid removeKid(std::string name) {
     }
     std::string str() {
-        return "["s + join(waiting) + "] => [" + join(playing) + "]";
+        return "["s + join(waiting,", ") + "] => [" + join(playing) + "]";
     }
 };
 

@@ -28,6 +28,10 @@ public:
 
 using PtrKid = std::shared_ptr<Kid>;
 
+std::ostream& operator<<(std::ostream& os,  Kid kid) {
+    return os << kid.str();
+}
+
 std::ostream& operator<<(std::ostream& os,  PtrKid kid) {
     return os << kid->str();
 }
@@ -37,7 +41,22 @@ class Trampoline {
     std::list<PtrKid> playing;
     
     PtrKid removeFromList(std::string name, std::list<PtrKid>& lista) {
-      auto aux = lista;
+      // for(auto it = lista.begin(); it != lista.end(); ++it){
+        
+      // }
+      /*for(auto it = lista.begin(); it != lista.end();){
+        if((*it)->getName() != name){
+          it = lista.erase(it);
+        }else ++it;
+      }*/
+ for(auto it = lista.begin(); it != lista.end();){
+        if((*it)->getName() == name){
+          lista.remove(*it);
+           // remove(lista.begin(), lista.end(), *it);
+        }else ++it;
+      }
+
+      
     }
 
 public:
@@ -45,22 +64,27 @@ public:
     }
     
     void arrive(PtrKid kid) {
-      waiting.push_back(kid);
+      waiting.push_front(kid);
     }
 
     void enter() {
-      playing.push_back(waiting.front());
-      waiting.pop_front();
+      playing.push_front(waiting.back());
+      waiting.pop_back();
     }
 
     void leave() {
-      playing.pop_front();
+      waiting.push_front(playing.back());
+      playing.pop_back();
+      
     }
 
     PtrKid removeKid(std::string name) {
+      removeFromList(name, waiting);
+      removeFromList(name, playing);
+      
     }
     std::string str() {
-        return "["s + join(waiting) + "] => [" + join(playing) + "]";
+        return "["s + join(waiting,", ") + "] => [" + join(playing,", ") + "]";
     }
 };
 
