@@ -51,8 +51,8 @@ class Trampoline {
       }*/
  for(auto it = lista.begin(); it != lista.end();){
         if((*it)->getName() == name){
-          lista.remove(*it);
-           // remove(lista.begin(), lista.end(), *it);
+          it = lista.erase(it);
+          
         }else ++it;
       }
 
