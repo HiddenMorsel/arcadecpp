@@ -1,3 +1,9 @@
+// Tempo: 80 minutos;
+
+// -Fiz com a ajuda do professor para identificar um erro, onde o removeKid precisava de um retorno PtrKid, mas meu código só chamava a função de remover da lista. 
+// -Aprendi que é importante ter cuidado para colocar o retorno de uma função, ou pode arruinar tudo.
+
+
 #include <iostream>
 #include <list>
 #include <sstream>
@@ -39,27 +45,29 @@ std::ostream& operator<<(std::ostream& os,  PtrKid kid) {
 class Trampoline {
     std::list<PtrKid> waiting;
     std::list<PtrKid> playing;
-    
-    PtrKid removeFromList(std::string name, std::list<PtrKid>& lista) {
-      // for(auto it = lista.begin(); it != lista.end(); ++it){
-        
-      // }
-      /*for(auto it = lista.begin(); it != lista.end();){
-        if((*it)->getName() != name){
-          it = lista.erase(it);
-        }else ++it;
-      }*/
- for(auto it = lista.begin(); it != lista.end();){
-        if((*it)->getName() == name){
-          it = lista.erase(it);
-          
-        }else ++it;
-      }
-
-      
-    }
 
 public:
+   PtrKid removeFromList(std::string name, std::list<PtrKid>& lista) {
+    //   // for(auto it = lista.begin(); it != lista.end(); ++it){
+        
+    //   // }
+    //   /*for(auto it = lista.begin(); it != lista.end();){
+    //     if((*it)->getName() != name){
+    //       it = lista.erase(it);
+    //     }else ++it;
+    //   }*/
+     for(auto it = lista.begin(); it != lista.end();){
+       if((*it)->getName() == name){
+         auto aux = (*it);
+         it = lista.erase(it);  
+         return aux;
+        } else {
+         ++it;
+        }
+       }
+      return nullptr;
+    }
+
     Trampoline() {
     }
     
@@ -73,15 +81,16 @@ public:
     }
 
     void leave() {
+      if(playing.empty()) return;
       waiting.push_front(playing.back());
       playing.pop_back();
       
     }
 
     PtrKid removeKid(std::string name) {
-      removeFromList(name, waiting);
-      removeFromList(name, playing);
-      
+       removeFromList(name, waiting);
+       removeFromList(name, playing);  
+      return nullptr;
     }
     std::string str() {
         return "["s + join(waiting,", ") + "] => [" + join(playing,", ") + "]";
@@ -90,7 +99,6 @@ public:
 
 int main() {
     Trampoline tr;
-
     while (true) {
         auto line = input();
         write("$" + line);

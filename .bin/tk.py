@@ -289,8 +289,8 @@ class Solver:
         self.__prepare_c_cpp(pre, pos)
 
     def __prepare_cpp(self: str):
-        # pre = ["g++", "-std=c++20", "-Wall", "-g", "-fsanitize=address", "-fsanitize=undefined", "-D_GLIBCXX_DEBUG"] # muito lento no replit
-        pre = ["g++", "-std=c++20", "-Wall", "-Wextra"]
+        pre = ["g++", "-std=c++20", "-Wall", "-Wextra", "-Werror"] # muito lento no replit
+        #pre = ["g++", "-std=c++20", "-Wall", "-Wextra"]
         pos = []
         self.__prepare_c_cpp(pre, pos)
 
