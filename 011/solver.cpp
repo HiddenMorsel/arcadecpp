@@ -51,8 +51,9 @@ public:
   std::string toStr(){
     std::stringstream ss;
     ss << "[" << std::setw(8) << std::setfill(' ') << name << " : " 
-       << quantity << " U : " << std::fixed << std::setprecision(2) << price << " RS]";
+       << quantity << " U : " << std::fixed << std::setprecision(2) << price << " RS]"; //padding;
     return ss.str();
+    
   }
   
 };
@@ -143,11 +144,19 @@ public:
   std::string toStr(){
     std::stringstream ss;
     ss << "saldo: " << std::fixed << std::setprecision(2)<< cash <<"\n";
+    // for(int i = 0; i < capacity; i++){
+    //   if(i != capacity - 1) ss << i << " " << slots[i].toStr() << "\n";
+    //   else if(i == capacity - 1) ss << i << " " << slots[i].toStr();
+    // }
+
+    // return ss.str();
+
     for(int i = 0; i < capacity; i++){
-      if(i != capacity - 1) ss << i << " " << slots[i].toStr() << "\n";
-      else if(i == capacity - 1) ss << i << " " << slots[i].toStr();
+       ss << i << " " << slots[i].toStr() << "\n";
     }
-    return ss.str();
+    auto string = ss.str();
+    string.pop_back();
+    return string;
   }
 };
 
@@ -177,6 +186,6 @@ int main(){
           fn::write(machine.troco());
         } else if(args[0] == "comprar"){
           machine.buyItem((int) +args[1]);
-        }
+        } else fn::write("fail: comando invalido");
     }
 }
