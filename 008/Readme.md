@@ -4,9 +4,12 @@
 
 [](toc)
 
-- [Explicação](#explicação)
+- 
+Expl
+icação](#explicação)
 - [Intro](#intro)
-- [Guide](#guide)
+- [Guide]
+- (#guide)
 - [Shell](#shell)
 - [Fim da história](#fim-da-história)
 [](toc)

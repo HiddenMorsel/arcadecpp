@@ -218,6 +218,21 @@ public:
     //lembre que você pode ter problemas de concorrência
     //se tentar percorrer uma lista ao mesmo tempo que tenta modificá-la
     void plus() {
+      for( auto& cli : alive_list){
+        int value = ceil(cli.getBalance()* 0.1);
+        pushOperation(cli, PLUS, value);
+      }
+
+      std::vector<std::string> to_kill;
+
+      for( auto& cli : alive_list){
+        if(cli.getBalance() > cli.getLimite()) to_kill.push_back(cli.getName());
+      }
+
+      for(auto& name : to_kill){
+        kill(name);
+      }
+      
     }
 
     //use a função search para verificar se o cliente existe
@@ -228,31 +243,26 @@ public:
     //do cliente morto e adicione no vetor de transações dos mortos
     //lembre que você pode ter problemas de concorrência
     //pesquise como fazer isso
-    void RemoverOpVivos(std::string name){
-        for(int i = 0; i < (int) alive_oper.size(); i++){
-            if(alive_oper[i]->getName() == name){
-                alive_oper.erase(alive_oper.begin() + i);
-            }
-        }
-    }
     void kill(std::string name) {
-    if(searchClient(name) < 0){
+      auto index = searchClient(name);
+      if(index < 0){
             std::cout << "fail: cliente nao existe" << std::endl;
             return;
-        }
-        death_list.push_back(alive_list[searchClient(name)]);
-        alive_list.erase(alive_list.begin() + searchClient(name));
-        for(int i = 0; i < (int) alive_oper.size(); i++){
-            if(alive_oper[i]->getName() == name){
-                death_oper.push_back(alive_oper[i]);
-            }
+      }
+      auto cliente = alive_list[index];
+      death_list.push_back(alive_list[index]);
+      alive_list.erase(alive_list.begin() + index);
 
-        }
-        for(int i = 0; i < (int) alive_oper.size(); i++){
-            if(alive_oper[i]->getName() == name){
-              alive_oper.erase(alive_oper.begin() + i);
-            }
-        }
+      auto op_morto = cliente.getOperations();
+      
+      death_oper.insert(death_oper.end(), op_morto.begin(), op_morto.end());
+
+      alive_oper =  fn::filter(alive_oper, [name](auto op) {
+        return op->getName() != name;
+      });
+      
+      
+        
     }
 
 
@@ -305,6 +315,8 @@ int main() {
             agiota.take(args[1], +args[2]);
         } else if(args[0] == "kill") {
             agiota.kill(args[1]);
-        }else fn::write("fail: Comando invalido");
+        } else if(args[0] == "plus") {
+            agiota.plus();
+        } else fn::write("fail: Comando invalido");
         }
     }
